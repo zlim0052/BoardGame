@@ -62,13 +62,13 @@ def save_game_menu(screen, sounds):
     save_slots = ['Save Slot 1', 'Save Slot 2', 'Save Slot 3']
     save_buttons = []
     for i, slot in enumerate(save_slots):
-        rect = pygame.Rect(SCREEN_WIDTH / 2-100, 200 + i * 60, 200, 50)
+        rect = pygame.Rect(SCREEN_WIDTH / 2 - 100, 200 + i * 60, 200, 50)
         save_buttons.append((rect, slot))
     while menu_running:
         screen.fill(BLACK)
-        title_text = font.render('Select a save slot:', True, WHITE)
+        title_text = font.render('Select Save Slot', True, WHITE)
         screen.blit(title_text, (SCREEN_WIDTH / 2 - title_text.get_width() / 2, 100))
-        for rect, text in save_buttons:
+        for rect, slot in save_buttons:
             pygame.draw.rect(screen, GRAY, rect)
             slot_text = font.render(slot, True, WHITE)
             screen.blit(slot_text, (rect.x + 20, rect.y + 10))
@@ -77,7 +77,7 @@ def save_game_menu(screen, sounds):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 for rect, slot in save_buttons:
                     if rect.collidepoint(event.pos):
                         sounds['button_click'].play()
