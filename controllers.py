@@ -4,6 +4,7 @@ import pygame
 from settings import *
 from utils import save_game
 from views import *
+from utils import save_game_menu  # Import save_game_menu from the correct module
 from models import Player
 
 def player_turn(player, deck, board, screen, players, clock, card_back_image, 
@@ -42,6 +43,8 @@ def player_turn(player, deck, board, screen, players, clock, card_back_image,
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     if save_button.collidepoint(pos):
+                        sounds['button_click'].play()  # Play click sound
+                        filename = save_game_menu(screen, sounds)
                         game_state = {
                             'board': board,
                             'deck': deck,
@@ -52,8 +55,8 @@ def player_turn(player, deck, board, screen, players, clock, card_back_image,
                             'num_cards_per_character': num_cards_per_character
                         }
 
-                        save_game(game_state)
-                        display_message(screen, "Game saved.")
+                        save_game(game_state, filename)
+                        display_message(screen, f"Game saved to {filename}.")
                     else:
                         for c in deck:
                             if c.rect.collidepoint(pos) and not c.is_flipped:

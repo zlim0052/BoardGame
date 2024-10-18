@@ -8,6 +8,7 @@
 import pygame
 from settings import *
 from models import Card, Player, Board
+from utils import load_game_menu
 from views import *
 from controllers import player_turn, print_players_status
 from utils import load_card_images, create_deck, load_game, save_game, update_images, load_sounds
@@ -179,7 +180,8 @@ def main():
     choice = main_menu(screen, sounds)
 
     if choice == 'load':
-        game_state = load_game()
+        filename = load_game_menu(screen, sounds)
+        game_state = load_game(filename)
         if game_state:
             board = game_state['board']
             deck = game_state['deck']
@@ -193,10 +195,11 @@ def main():
         else:
             display_message(screen, "No saved game found. Starting new game.")
             sounds['game_start'].play()
-            num_sections, card_numbers = configuration_menu(screen)
+            num_sections, card_numbers, num_cards_per_character = configuration_menu(screen)
             card_images, card_back_image, board_char_images = load_card_images(card_numbers)
             board, deck, players, current_player_index = setup_new_game(center, board_char_images, card_images, num_sections, card_numbers, num_cards_per_character)
     else:
+        sounds['game_start'].play()
         num_sections, card_numbers, num_cards_per_character = configuration_menu(screen)
         card_images, card_back_image, board_char_images = load_card_images(card_numbers)
         board, deck, players, current_player_index = setup_new_game(center, board_char_images, card_images, num_sections, card_numbers, num_cards_per_character)
